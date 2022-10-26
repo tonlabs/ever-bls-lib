@@ -1,7 +1,7 @@
 [package]
 edition = '2018'
 name = 'ever_bls_lib'
-version = '0.1.16'
+version = '0.1.17'
 
 [dependencies]
 criterion = '0.3'
