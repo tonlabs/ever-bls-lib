@@ -115,5 +115,3 @@ pub fn aggregate_bls_signatures(sig_bytes_with_nodes_info_vec: &Vec<&Vec<u8>>) -
     Ok(new_agg_sig_bytes)
 }
 
-
-

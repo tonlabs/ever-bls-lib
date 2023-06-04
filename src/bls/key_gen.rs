@@ -53,7 +53,6 @@ impl BlsKeyPair {
         println!("--------------------------------------------------");
     }
 
-
     pub fn serialize(&self) -> ([u8; BLS_PUBLIC_KEY_LEN], [u8; BLS_SECRET_KEY_LEN])  {
         (self.pk_bytes, self.sk_bytes)
     }
@@ -114,16 +113,4 @@ impl BlsKeyPair {
         };
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
 

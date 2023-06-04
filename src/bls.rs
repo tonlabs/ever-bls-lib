@@ -34,7 +34,6 @@ pub const BLS_SIG_LEN_FOR_MIN_SIG_MODE: usize = 48;
 pub const BLS_SIG_LEN: usize = BLS_SIG_LEN_FOR_MIN_PK_MODE;
 pub const BLS_SEED_LEN: usize = 32;
 
-
 pub fn gen_bls_key_pair_based_on_key_material(ikm: &[u8; BLS_KEY_MATERIAL_LEN]) -> Result<([u8; BLS_PUBLIC_KEY_LEN], [u8; BLS_SECRET_KEY_LEN])> {
     let key_pair = BlsKeyPair::gen_bls_key_pair_based_on_key_material(ikm)?;
     Ok(key_pair.serialize())
@@ -110,7 +109,6 @@ pub fn print_signature_bytes(sig_bytes: &[u8]) {
 pub fn print_bls_signature(bls_sig_bytes: &Vec<u8>) {
     BlsSignature::print_bls_signature(bls_sig_bytes)
 }
-
 
 #[test]
 fn test_gen_bls_key_pair() {
