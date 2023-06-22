@@ -39,6 +39,7 @@ pub fn convert_vec_to_array(v: Vec<u8>) -> [u8; BLS_PUBLIC_KEY_LEN] {
         .unwrap_or_else(|v: Vec<u8>| panic!("Expected vector of length {} but it was {}", BLS_PUBLIC_KEY_LEN, v.len()))
 }
 
+
 pub fn convert_signature_to_signature_bytes(sig: Signature) -> [u8; BLS_SIG_LEN] {
     return sig.to_bytes();
 }
