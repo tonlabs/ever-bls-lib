@@ -1,7 +1,5 @@
+use crate::{fail, Result};
 use std::collections::HashMap;
-use super::random_helper::*;
-use ton_types::{fail, Result};
-use std::time::{Instant, Duration};
 
 #[derive(Clone, PartialEq, Eq, Debug)]
 pub struct NodesInfo {

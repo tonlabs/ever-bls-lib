@@ -1,4 +1,3 @@
-use rand::SeedableRng;
 use rand::Rng;
 use rand::{RngCore};
 use super::nodes_info::*;
@@ -28,7 +27,7 @@ pub fn gen_signer_indexes(n: u16, k: u16) -> Vec<u16> {
     loop {
         let mut indexes = Vec::new();
 
-        for i in 0..k {
+        for _i in 0..k {
             indexes.push(rng.gen_range(0, n));
         }
 

@@ -1,14 +1,9 @@
+use crate::{fail, Result};
 use super::converters::*;
-use super::random_helper::*;
 use super::nodes_info::*;
-use super::key_gen::*;
 use super::sig::*;
 use crate::bls::*;
-use blst::*;
 use blst::min_pk::*;
-//use blst::min_sig::*;
-use ton_types::{fail, Result};
-use std::collections::HashMap;
 
 pub fn aggregate_public_keys(bls_pks_bytes: &Vec<&[u8; BLS_PUBLIC_KEY_LEN]>) -> Result<[u8; BLS_PUBLIC_KEY_LEN]> {
     if bls_pks_bytes.len() == 0 {
@@ -36,7 +31,7 @@ pub fn aggregate_public_keys_based_on_nodes_info(bls_pks_bytes: &Vec<&[u8; BLS_P
     }
     let mut apk_pks_required_refs: Vec<&[u8; BLS_PUBLIC_KEY_LEN]> = Vec::new();
     for (index, number_of_occurrence) in &nodes_info.map {
-        for i in 0..*number_of_occurrence {
+        for _i in 0..*number_of_occurrence {
             apk_pks_required_refs.push(bls_pks_bytes[*index as usize]);
         }
     }

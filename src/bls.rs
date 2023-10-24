@@ -1,4 +1,3 @@
-
 mod key_gen;
 mod sig;
 mod nodes_info;
@@ -6,23 +5,14 @@ mod converters;
 mod aggregate;
 mod random_helper;
 
+use crate::Result;
 pub use self::key_gen::*;
 pub use self::sig::*;
 pub use self::aggregate::*;
 pub use self::nodes_info::*;
 pub use self::random_helper::*;
-use blst::*;
 
-use blst::min_pk::*;
-//use blst::min_sig::*;
-
-use rand::Rng;
-use rand::RngCore;
-
-use ton_types::{fail, Result};
-use std::time::{Instant, Duration};
-use std::convert::TryInto;
-use crate::bls::random_helper::{generate_random_msg, generate_random_msg_of_fixed_len};
+use std::time::Instant;
 
 pub const BLS_SECRET_KEY_LEN: usize = 32;
 pub const BLS_PUBLIC_KEY_LEN_FOR_MIN_PK_MODE: usize = 48;
@@ -45,7 +35,7 @@ pub fn gen_bls_key_pair() -> Result<([u8; BLS_PUBLIC_KEY_LEN], [u8; BLS_SECRET_K
     Ok(key_pair.serialize())
 }
 
-pub fn gen_public_key_based_on_secret_key(sk: &[u8; BLS_SECRET_KEY_LEN]) -> Result<([u8; BLS_PUBLIC_KEY_LEN])> {
+pub fn gen_public_key_based_on_secret_key(sk: &[u8; BLS_SECRET_KEY_LEN]) -> Result<[u8; BLS_PUBLIC_KEY_LEN]> {
     let pk = BlsKeyPair::deserialize_based_on_secret_key(sk)?;
     Ok(pk.pk_bytes)
 }
