@@ -9,8 +9,9 @@ use blst::min_pk::*;
 //use blst::min_sig::*;
 use tvm_types::fail;
 
-
-pub fn aggregate_public_keys(bls_pks_bytes: &Vec<&[u8; BLS_PUBLIC_KEY_LEN]>) -> Result<[u8; BLS_PUBLIC_KEY_LEN]> {
+pub fn aggregate_public_keys(
+    bls_pks_bytes: &Vec<&[u8; BLS_PUBLIC_KEY_LEN]>,
+) -> Result<[u8; BLS_PUBLIC_KEY_LEN]> {
     if bls_pks_bytes.len() == 0 {
         fail!("Vector of public keys can not be empty!");
     }
@@ -26,7 +27,10 @@ pub fn aggregate_public_keys(bls_pks_bytes: &Vec<&[u8; BLS_PUBLIC_KEY_LEN]>) -> 
     Ok(agg.to_public_key().to_bytes())
 }
 
-pub fn aggregate_public_keys_based_on_nodes_info(bls_pks_bytes: &Vec<&[u8; BLS_PUBLIC_KEY_LEN]>, nodes_info_bytes: &Vec<u8>) -> Result<[u8; BLS_PUBLIC_KEY_LEN]> {
+pub fn aggregate_public_keys_based_on_nodes_info(
+    bls_pks_bytes: &Vec<&[u8; BLS_PUBLIC_KEY_LEN]>,
+    nodes_info_bytes: &Vec<u8>,
+) -> Result<[u8; BLS_PUBLIC_KEY_LEN]> {
     if bls_pks_bytes.len() == 0 {
         fail!("Vector of public keys can not be empty!");
     }
@@ -44,11 +48,17 @@ pub fn aggregate_public_keys_based_on_nodes_info(bls_pks_bytes: &Vec<&[u8; BLS_P
     let result = aggregate_public_keys(&apk_pks_required_refs)?;
     let duration = now.elapsed();
 
-    println!("Time elapsed by !!!aggregate_public_keys is: {:?}", duration);
+    println!(
+        "Time elapsed by !!!aggregate_public_keys is: {:?}",
+        duration
+    );
     Ok(result)
 }
 
-pub fn aggregate_two_bls_signatures(sig_bytes_with_nodes_info_1: &Vec<u8>, sig_bytes_with_nodes_info_2: &Vec<u8>) -> Result<Vec<u8>> {
+pub fn aggregate_two_bls_signatures(
+    sig_bytes_with_nodes_info_1: &Vec<u8>,
+    sig_bytes_with_nodes_info_2: &Vec<u8>,
+) -> Result<Vec<u8>> {
     let bls_sig_1 = BlsSignature::deserialize(sig_bytes_with_nodes_info_1)?;
     let bls_sig_2 = BlsSignature::deserialize(sig_bytes_with_nodes_info_2)?;
     let new_nodes_info = NodesInfo::merge(&bls_sig_1.nodes_info, &bls_sig_2.nodes_info)?;
@@ -90,7 +100,7 @@ pub fn aggregate_bls_signatures(sig_bytes_with_nodes_info_vec: &Vec<&Vec<u8>>) -
         let sig = convert_signature_bytes_to_signature(&bls_sigs_refs[i].sig_bytes)?;
         println!("{:?}", &sig.to_bytes());
         //return this part to exclude zero sig
-       /* let res = sig.validate(true);
+        /* let res = sig.validate(true);
         if res.is_err() {
             fail!("Sig is point of infinity or does not belong to group.");
         }*/
@@ -114,5 +124,3 @@ pub fn aggregate_bls_signatures(sig_bytes_with_nodes_info_vec: &Vec<&Vec<u8>>) -
     let new_agg_sig_bytes = BlsSignature::serialize(&new_agg_sig);
     Ok(new_agg_sig_bytes)
 }
-
-

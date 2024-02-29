@@ -3,18 +3,13 @@ use super::converters::*;
 use blst::min_pk::*;
 //use blst::min_sig::*;
 
-use rand::{RngCore};
-
-
-
-
-
+use rand::RngCore;
 
 use tvm_types::{fail, Result};
 
+use crate::bls::BLS_KEY_MATERIAL_LEN;
 use crate::bls::BLS_PUBLIC_KEY_LEN;
 use crate::bls::BLS_SECRET_KEY_LEN;
-use crate::bls::BLS_KEY_MATERIAL_LEN;
 
 pub struct KeyPair {
     pub sk: SecretKey,
@@ -24,12 +19,12 @@ pub struct KeyPair {
 #[derive(Clone, PartialEq, Eq, Debug)]
 pub struct BlsKeyPair {
     pub pk_bytes: [u8; BLS_PUBLIC_KEY_LEN],
-    pub sk_bytes: [u8; BLS_SECRET_KEY_LEN]
+    pub sk_bytes: [u8; BLS_SECRET_KEY_LEN],
 }
 
 impl BlsKeyPair {
     pub fn print_bls_public_key(bls_pk_bytes: &[u8]) {
-        if bls_pk_bytes.len() != BLS_PUBLIC_KEY_LEN{
+        if bls_pk_bytes.len() != BLS_PUBLIC_KEY_LEN {
             panic!("Incorrect length of secret key byte array!")
         }
         println!("--------------------------------------------------");
@@ -53,12 +48,13 @@ impl BlsKeyPair {
         println!("--------------------------------------------------");
     }
 
-
-    pub fn serialize(&self) -> ([u8; BLS_PUBLIC_KEY_LEN], [u8; BLS_SECRET_KEY_LEN])  {
+    pub fn serialize(&self) -> ([u8; BLS_PUBLIC_KEY_LEN], [u8; BLS_SECRET_KEY_LEN]) {
         (self.pk_bytes, self.sk_bytes)
     }
 
-    pub fn deserialize(key_pair_data: &([u8; BLS_PUBLIC_KEY_LEN], [u8; BLS_SECRET_KEY_LEN])) -> Result<Self> {
+    pub fn deserialize(
+        key_pair_data: &([u8; BLS_PUBLIC_KEY_LEN], [u8; BLS_SECRET_KEY_LEN]),
+    ) -> Result<Self> {
         let sk = convert_secret_key_bytes_to_secret_key(&key_pair_data.1)?;
         let pk = sk.sk_to_pk();
         if key_pair_data.0 != pk.to_bytes() {
@@ -66,7 +62,7 @@ impl BlsKeyPair {
         }
         Ok(Self {
             pk_bytes: key_pair_data.0,
-            sk_bytes: key_pair_data.1
+            sk_bytes: key_pair_data.1,
         })
     }
 
@@ -75,11 +71,13 @@ impl BlsKeyPair {
         let pk = sk.sk_to_pk();
         Ok(Self {
             pk_bytes: pk.to_bytes(),
-            sk_bytes: sk.to_bytes()
+            sk_bytes: sk.to_bytes(),
         })
     }
 
-    pub fn gen_bls_key_pair_based_on_key_material(ikm: &[u8; BLS_KEY_MATERIAL_LEN]) -> Result<Self> {
+    pub fn gen_bls_key_pair_based_on_key_material(
+        ikm: &[u8; BLS_KEY_MATERIAL_LEN],
+    ) -> Result<Self> {
         let key_pair = BlsKeyPair::gen_key_pair_based_on_key_material(&ikm)?;
         Ok(BlsKeyPair::convert_key_pair_to_bls_key_pair(key_pair))
     }
@@ -114,4 +112,3 @@ impl BlsKeyPair {
         };
     }
 }
-

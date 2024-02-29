@@ -2,17 +2,14 @@ use super::converters::*;
 
 use super::nodes_info::*;
 
-
 use blst::*;
-
 
 //use blst::min_sig::*;
 
 use tvm_types::{fail, Result};
 
-use crate::bls::{add_node_info_to_sig, BLS_PUBLIC_KEY_LEN, BLS_SIG_LEN};
 use crate::bls::BLS_SECRET_KEY_LEN;
-
+use crate::bls::{add_node_info_to_sig, BLS_PUBLIC_KEY_LEN, BLS_SIG_LEN};
 
 pub const DST: [u8; 43] = *b"BLS_SIG_BLS12381G2_XMD:SHA-256_SSWU_RO_NUL_";
 
@@ -41,10 +38,16 @@ impl BlsSignature {
         let mut nodes_info_data = vec![0; len];
         nodes_info_data.copy_from_slice(&sig_bytes_with_nodes_info[BLS_SIG_LEN..]);
         let nodes_info = NodesInfo::deserialize(&nodes_info_data)?;
-        Ok(Self{sig_bytes, nodes_info})
+        Ok(Self {
+            sig_bytes,
+            nodes_info,
+        })
     }
 
-    pub fn simple_sign(sk_bytes: &[u8; BLS_SECRET_KEY_LEN], msg: &Vec<u8>) -> Result<[u8; BLS_SIG_LEN]> {
+    pub fn simple_sign(
+        sk_bytes: &[u8; BLS_SECRET_KEY_LEN],
+        msg: &Vec<u8>,
+    ) -> Result<[u8; BLS_SIG_LEN]> {
         if msg.len() == 0 {
             fail!("Msg to sign can not be empty!")
         }
@@ -53,7 +56,11 @@ impl BlsSignature {
         Ok(sig.to_bytes())
     }
 
-    pub fn simple_verify(sig_bytes: &[u8; BLS_SIG_LEN], msg: &Vec<u8>, pk_bytes: &[u8; BLS_PUBLIC_KEY_LEN]) -> Result<bool> {
+    pub fn simple_verify(
+        sig_bytes: &[u8; BLS_SIG_LEN],
+        msg: &Vec<u8>,
+        pk_bytes: &[u8; BLS_PUBLIC_KEY_LEN],
+    ) -> Result<bool> {
         if msg.len() == 0 {
             fail!("Msg to sign can not be empty!")
         }
@@ -63,7 +70,11 @@ impl BlsSignature {
         Ok(res == BLST_ERROR::BLST_SUCCESS)
     }
 
-    pub fn add_node_info_to_sig(sig_bytes: [u8; BLS_SIG_LEN], node_index: u16, total_num_of_nodes: u16) -> Result<Vec<u8>> {
+    pub fn add_node_info_to_sig(
+        sig_bytes: [u8; BLS_SIG_LEN],
+        node_index: u16,
+        total_num_of_nodes: u16,
+    ) -> Result<Vec<u8>> {
         if total_num_of_nodes == 0 {
             fail!("Total number of nodes can not be zero!");
         }
@@ -94,12 +105,18 @@ impl BlsSignature {
         Ok(bls_sig.nodes_info.serialize())
     }
 
-    pub fn truncate_nodes_info_from_sig(sig_bytes_with_nodes_info: &Vec<u8>) -> Result<[u8; BLS_SIG_LEN]> {
+    pub fn truncate_nodes_info_from_sig(
+        sig_bytes_with_nodes_info: &Vec<u8>,
+    ) -> Result<[u8; BLS_SIG_LEN]> {
         let bls_sig = BlsSignature::deserialize(sig_bytes_with_nodes_info)?;
         Ok(bls_sig.sig_bytes)
     }
 
-    pub fn verify(sig_bytes_with_nodes_info: &Vec<u8>, pk_bytes: &[u8; BLS_PUBLIC_KEY_LEN], msg: &Vec<u8>) -> Result<bool> {
+    pub fn verify(
+        sig_bytes_with_nodes_info: &Vec<u8>,
+        pk_bytes: &[u8; BLS_PUBLIC_KEY_LEN],
+        msg: &Vec<u8>,
+    ) -> Result<bool> {
         let sig_bytes = BlsSignature::truncate_nodes_info_from_sig(sig_bytes_with_nodes_info)?;
         let res = BlsSignature::simple_verify(&sig_bytes, msg, pk_bytes)?;
         Ok(res)
@@ -131,4 +148,3 @@ impl BlsSignature {
         println!("--------------------------------------------------");
     }
 }
-
