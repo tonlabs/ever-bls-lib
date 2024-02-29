@@ -1,7 +1,7 @@
-# ton-bls-lib
+# gosh-bls-lib
 
-This library is developed to handle BLS signature for TON blockchain. It is responsible for generation BLS keys and provides basic signing/verification functionality. Also it provides aggregation functionality for public keys and signatures. 
-Basic BLS functionality is provided by [blst](https://github.com/supranational/blst) library. _ton-bls-lib_ exploits it and adds additional infrastracture and extra data parsing.
+This library is developed to handle BLS signature for GOSH blockchain. It is responsible for generation BLS keys and provides basic signing/verification functionality. Also it provides aggregation functionality for public keys and signatures. 
+Basic BLS functionality is provided by [blst](https://github.com/supranational/blst) library. _gosh-bls-lib_ exploits it and adds additional infrastracture and extra data parsing.
 
 Raw BLS signature is a byte array of length 96 (or 48) bytes. Each BLS signature is produced initially by some node with unique index _node_index_. Also there is some fixed number of nodes for current validation session. Node concatenates BLS signature with _node_index_ and _total_number_of_nodes_. So it looks as follows.
 
@@ -29,7 +29,7 @@ When masterchain validator gets such aggregated BLS signature in broadcast prote
 
 ## API description
 
-Below there are constants and functions that are provided by _ton-bls-lib_.
+Below there are constants and functions that are provided by _gosh-bls-lib_.
 
 ```rust
 pub const BLS_SECRET_KEY_LEN: usize = 32;

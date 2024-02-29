@@ -10,7 +10,7 @@ use std::hash::{Hash, Hasher};
 
 use std::collections::HashSet;
 
-use ton_types::{fail, Result};
+use tvm_types::{fail, Result};
 
 use crate::bls::BLS_PUBLIC_KEY_LEN;
 use crate::bls::BLS_SECRET_KEY_LEN;

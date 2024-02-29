@@ -19,7 +19,7 @@ use blst::min_pk::*;
 use rand::Rng;
 use rand::RngCore;
 
-use ton_types::{fail, Result};
+use tvm_types::{fail, Result};
 use std::time::{Instant, Duration};
 use std::convert::TryInto;
 use crate::bls::random_helper::{generate_random_msg, generate_random_msg_of_fixed_len};

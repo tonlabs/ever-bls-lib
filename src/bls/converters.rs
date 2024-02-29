@@ -2,7 +2,7 @@
 use blst::*;
 use blst::min_pk::*;
 //use blst::min_sig::*;
-use ton_types::{fail, Result};
+use tvm_types::{fail, Result};
 use std::convert::TryInto;
 
 use crate::bls::BLS_PUBLIC_KEY_LEN;
