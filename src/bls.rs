@@ -8,21 +8,21 @@ mod random_helper;
 
 pub use self::key_gen::*;
 pub use self::sig::*;
-pub use self::aggregate::*;
+
 pub use self::nodes_info::*;
 pub use self::random_helper::*;
-use blst::*;
 
-use blst::min_pk::*;
+
+
 //use blst::min_sig::*;
 
-use rand::Rng;
-use rand::RngCore;
 
-use tvm_types::{fail, Result};
-use std::time::{Instant, Duration};
-use std::convert::TryInto;
-use crate::bls::random_helper::{generate_random_msg, generate_random_msg_of_fixed_len};
+
+
+use tvm_types::{Result};
+use std::time::{Instant};
+
+
 
 pub const BLS_SECRET_KEY_LEN: usize = 32;
 pub const BLS_PUBLIC_KEY_LEN_FOR_MIN_PK_MODE: usize = 48;
@@ -45,7 +45,7 @@ pub fn gen_bls_key_pair() -> Result<([u8; BLS_PUBLIC_KEY_LEN], [u8; BLS_SECRET_K
     Ok(key_pair.serialize())
 }
 
-pub fn gen_public_key_based_on_secret_key(sk: &[u8; BLS_SECRET_KEY_LEN]) -> Result<([u8; BLS_PUBLIC_KEY_LEN])> {
+pub fn gen_public_key_based_on_secret_key(sk: &[u8; BLS_SECRET_KEY_LEN]) -> Result<[u8; BLS_PUBLIC_KEY_LEN]> {
     let pk = BlsKeyPair::deserialize_based_on_secret_key(sk)?;
     Ok(pk.pk_bytes)
 }
@@ -114,9 +114,9 @@ pub fn print_bls_signature(bls_sig_bytes: &Vec<u8>) {
 
 #[test]
 fn test_gen_bls_key_pair() {
-    for i in 0..100 {
+    for _i in 0..100 {
         let now = Instant::now();
-        let key_pair = gen_bls_key_pair().unwrap();
+        let _key_pair = gen_bls_key_pair().unwrap();
         let duration = now.elapsed();
       //  println!("Public key : {:?}", key_pair.0);
        // println!("Secret key : {:?}", key_pair.1);
@@ -126,8 +126,8 @@ fn test_gen_bls_key_pair() {
 
 #[test]
 fn test_gen_bls_key_pair_based_on_key_material() {
-    let mut ikm = [0u8; BLS_KEY_MATERIAL_LEN];
-    for i in 0..100 {
+    let ikm = [0u8; BLS_KEY_MATERIAL_LEN];
+    for _i in 0..100 {
         let now = Instant::now();
         let key_pair = gen_bls_key_pair_based_on_key_material(&ikm).unwrap();
         let duration = now.elapsed();
@@ -139,7 +139,7 @@ fn test_gen_bls_key_pair_based_on_key_material() {
 
 #[test]
 fn test_gen_public_key_based_on_secret_key() {
-    for i in 0..100 {
+    for _i in 0..100 {
         let key_pair = gen_bls_key_pair().unwrap();
         let now = Instant::now();
         let pk = gen_public_key_based_on_secret_key(&key_pair.1).unwrap();
@@ -153,11 +153,11 @@ fn test_gen_public_key_based_on_secret_key() {
 
 #[test]
 fn test_sign() {
-    for i in 0..100 {
+    for _i in 0..100 {
         let key_pair = gen_bls_key_pair().unwrap();
         let msg = generate_random_msg_of_fixed_len(10000000);
         let now = Instant::now();
-        let sig = sign(&key_pair.1, &msg).unwrap();
+        let _sig = sign(&key_pair.1, &msg).unwrap();
         let duration = now.elapsed();
         //  println!("Public key : {:?}", key_pair.0);
         //println!("Secret key : {:?}", key_pair.1);
@@ -168,7 +168,7 @@ fn test_sign() {
 
 #[test]
 fn test_verify() {
-    for i in 0..100 {
+    for _i in 0..100 {
         let key_pair = gen_bls_key_pair().unwrap();
         let msg = generate_random_msg_of_fixed_len(1000);
         let sig = sign(&key_pair.1, &msg).unwrap();
@@ -186,12 +186,12 @@ fn test_verify() {
 fn test_add_node_info_to_sig() {
     let index = 100;
     let total_num_of_index = 10000;
-    for i in 0..100 {
+    for _i in 0..100 {
         let key_pair = gen_bls_key_pair().unwrap();
         let msg = generate_random_msg_of_fixed_len(500000);
         let sig = sign(&key_pair.1, &msg).unwrap();
         let now = Instant::now();
-        let res = add_node_info_to_sig(sig, index, total_num_of_index).unwrap();
+        let _res = add_node_info_to_sig(sig, index, total_num_of_index).unwrap();
         let duration = now.elapsed();
         //  println!("Public key : {:?}", key_pair.0);
         //println!("Secret key : {:?}", key_pair.1);
@@ -203,11 +203,11 @@ fn test_add_node_info_to_sig() {
 fn test_sign_and_add_node_info() {
     let index = 100;
     let total_num_of_index = 1000;
-    for i in 0..100 {
+    for _i in 0..100 {
         let key_pair = gen_bls_key_pair().unwrap();
         let msg = generate_random_msg_of_fixed_len(10000000);
         let now = Instant::now();
-        let res = sign_and_add_node_info(&key_pair.1, &msg, index, total_num_of_index).unwrap();
+        let _res = sign_and_add_node_info(&key_pair.1, &msg, index, total_num_of_index).unwrap();
         let duration = now.elapsed();
         //  println!("Public key : {:?}", key_pair.0);
         //println!("Secret key : {:?}", key_pair.1);
@@ -218,15 +218,15 @@ fn test_sign_and_add_node_info() {
 #[test]
 fn test_aggregate_public_keys() {
     let number_of_keys = 10000;
-    for i in 0..10 {
+    for _i in 0..10 {
         let mut public_keys = Vec::new();
-        for j in 0..number_of_keys {
+        for _j in 0..number_of_keys {
             let key_pair = gen_bls_key_pair().unwrap();
             public_keys.push(key_pair.0);
         }
         let public_keys_refs: Vec<&[u8; BLS_PUBLIC_KEY_LEN]> = public_keys.iter().map(|pk| pk).collect();
         let now = Instant::now();
-        let res = aggregate_public_keys(&public_keys_refs).unwrap();
+        let _res = aggregate_public_keys(&public_keys_refs).unwrap();
         let duration = now.elapsed();
         //  println!("Public key : {:?}", key_pair.0);
         //println!("Secret key : {:?}", key_pair.1);
@@ -237,7 +237,7 @@ fn test_aggregate_public_keys() {
 #[test]
 fn test_aggregate_public_keys_based_on_nodes_info() {
     let total_num_of_nodes = 10000;
-    for i in 0..10 {
+    for _i in 0..10 {
         let indexes: Vec<u16> =  gen_signer_indexes(total_num_of_nodes, total_num_of_nodes * 2);
         let mut node_info_vec = Vec::new();
         for ind in &indexes {
@@ -252,13 +252,13 @@ fn test_aggregate_public_keys_based_on_nodes_info() {
        // info.print();
 
         let mut public_keys = Vec::new();
-        for j in 0..total_num_of_nodes {
+        for _j in 0..total_num_of_nodes {
             let key_pair = gen_bls_key_pair().unwrap();
             public_keys.push(key_pair.0);
         }
         let public_keys_refs: Vec<&[u8; BLS_PUBLIC_KEY_LEN]> = public_keys.iter().map(|pk| pk).collect();
         let now = Instant::now();
-        let res = aggregate_public_keys_based_on_nodes_info(&public_keys_refs, &info.serialize()).unwrap();
+        let _res = aggregate_public_keys_based_on_nodes_info(&public_keys_refs, &info.serialize()).unwrap();
         let duration = now.elapsed();
 
         println!("Time elapsed by aggregate_public_keys is: {:?}", duration);
@@ -268,7 +268,7 @@ fn test_aggregate_public_keys_based_on_nodes_info() {
 #[test]
 fn test_aggregate_two_bls_signatures() {
     let number_of_keys = 100;
-    for i in 0..10 {
+    for _i in 0..10 {
         let key_pair_1 = gen_bls_key_pair().unwrap();
         let key_pair_2 = gen_bls_key_pair().unwrap();
         let msg = generate_random_msg();
@@ -277,7 +277,7 @@ fn test_aggregate_two_bls_signatures() {
         let sig_1 = sign_and_add_node_info(&key_pair_1.1, &msg, ind_1, number_of_keys).unwrap();
         let sig_2 = sign_and_add_node_info(&key_pair_2.1, &msg, ind_2, number_of_keys).unwrap();
         let now = Instant::now();
-        let res = aggregate_two_bls_signatures(&sig_1, &sig_2).unwrap();
+        let _res = aggregate_two_bls_signatures(&sig_1, &sig_2).unwrap();
         let duration = now.elapsed();
         //  println!("Public key : {:?}", key_pair.0);
         //println!("Secret key : {:?}", key_pair.1);
@@ -288,7 +288,7 @@ fn test_aggregate_two_bls_signatures() {
 #[test]
 fn test_aggregate_two_bls_signatures_2() {
     let number_of_keys = 10000;
-    for i in 0..10 {
+    for _i in 0..10 {
         let key_pair_1 = gen_bls_key_pair().unwrap();
         let key_pair_2 = gen_bls_key_pair().unwrap();
         let msg = generate_random_msg();
@@ -312,7 +312,7 @@ fn test_aggregate_two_bls_signatures_2() {
         }.serialize();
 
         let now = Instant::now();
-        let res = aggregate_two_bls_signatures(&bls_sig_1, &bls_sig_2).unwrap();
+        let _res = aggregate_two_bls_signatures(&bls_sig_1, &bls_sig_2).unwrap();
         let duration = now.elapsed();
         //  println!("Public key : {:?}", key_pair.0);
         //println!("Secret key : {:?}", key_pair.1);
@@ -324,10 +324,10 @@ fn test_aggregate_two_bls_signatures_2() {
 fn test_aggregate_bls_signatures() {
     let number_of_keys = 10000;
     let number_of_signatures = 50;
-    for i in 0..10 {
+    for _i in 0..10 {
         let mut sigs = Vec::new();
         let msg = generate_random_msg();
-        for j in 0..number_of_signatures {
+        for _j in 0..number_of_signatures {
             let key_pair = gen_bls_key_pair().unwrap();
             let sig = sign(&key_pair.1, &msg).unwrap();
             let info = create_random_nodes_info(number_of_keys, number_of_keys * 2);
@@ -341,7 +341,7 @@ fn test_aggregate_bls_signatures() {
         let sigs_refs: Vec<&Vec<u8>> = sigs.iter().map(|sig| sig).collect();
 
         let now = Instant::now();
-        let res = aggregate_bls_signatures(&sigs_refs).unwrap();
+        let _res = aggregate_bls_signatures(&sigs_refs).unwrap();
         let duration = now.elapsed();
 
         println!("Time elapsed by aggregate_bls_signatures is: {:?}", duration);

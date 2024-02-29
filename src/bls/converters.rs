@@ -1,5 +1,5 @@
 
-use blst::*;
+
 use blst::min_pk::*;
 //use blst::min_sig::*;
 use tvm_types::{fail, Result};
@@ -7,7 +7,7 @@ use std::convert::TryInto;
 
 use crate::bls::BLS_PUBLIC_KEY_LEN;
 use crate::bls::BLS_SECRET_KEY_LEN;
-use crate::bls::BLS_KEY_MATERIAL_LEN;
+
 use crate::bls::BLS_SIG_LEN;
 
 pub fn convert_secret_key_bytes_to_secret_key(sk_bytes: &[u8; BLS_SECRET_KEY_LEN]) -> Result<SecretKey> {
@@ -34,6 +34,7 @@ pub fn convert_public_key_bytes_to_public_key(pk_bytes: &[u8; BLS_PUBLIC_KEY_LEN
     Ok(pk)
 }
 
+#[allow(dead_code)]
 pub fn convert_vec_to_array(v: Vec<u8>) -> [u8; BLS_PUBLIC_KEY_LEN] {
     v.try_into()
         .unwrap_or_else(|v: Vec<u8>| panic!("Expected vector of length {} but it was {}", BLS_PUBLIC_KEY_LEN, v.len()))

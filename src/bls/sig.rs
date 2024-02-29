@@ -1,18 +1,18 @@
 use super::converters::*;
-use super::key_gen::*;
+
 use super::nodes_info::*;
-use super::random_helper::*;
-use std::convert::TryInto;
+
+
 use blst::*;
 
-use blst::min_pk::*;
+
 //use blst::min_sig::*;
 
 use tvm_types::{fail, Result};
 
 use crate::bls::{add_node_info_to_sig, BLS_PUBLIC_KEY_LEN, BLS_SIG_LEN};
 use crate::bls::BLS_SECRET_KEY_LEN;
-use crate::bls::BLS_KEY_MATERIAL_LEN;
+
 
 pub const DST: [u8; 43] = *b"BLS_SIG_BLS12381G2_XMD:SHA-256_SSWU_RO_NUL_";
 
@@ -127,7 +127,7 @@ impl BlsSignature {
         println!("--------------------------------------------------");
         println!("Signature bytes:");
         println!("{:?}", &self.sig_bytes);
-        &self.nodes_info.print();
+        self.nodes_info.print();
         println!("--------------------------------------------------");
     }
 }
