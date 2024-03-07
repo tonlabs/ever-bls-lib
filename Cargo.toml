@@ -4,10 +4,10 @@ name = 'ever_bls_lib'
 version = '0.1.83'
 
 [dependencies]
+blst = { features = [ 'portable' ], version = '0.3.5' }
 criterion = '0.3'
 failure = '0.1'
 rand = '0.7'
 rand_chacha = '0.2'
-blst = { features = [ 'portable' ], version = '0.3.5' }
-ton_types = { git = 'https://github.com/tonlabs/ever-types.git', tag = '2.0.19' }
+ton_types = { git = 'https://github.com/tonlabs/ever-types.git', tag = '2.0.33' }
 
